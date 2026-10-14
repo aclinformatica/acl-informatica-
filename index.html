@@ -1,0 +1,746 @@
+```html
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ACL Informática | Tecnologia & Assistência de Elite</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts Outfit & Space Grotesk -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Outfit', 'sans-serif'],
+                        mono: ['Space Grotesk', 'monospace'],
+                    },
+                    colors: {
+                        cyber: {
+                            base: '#08090f',
+                            card: '#0f121d',
+                            cyan: '#00f0ff',
+                            purple: '#7000ff',
+                            pink: '#ff007a',
+                            emerald: '#00ffaa'
+                        }
+                    },
+                    animation: {
+                        'pulse-glow': 'pulseGlow 3s infinite alternate',
+                        'float': 'float 6s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        pulseGlow: {
+                            '0%': { boxShadow: '0 0 15px rgba(0, 240, 255, 0.2)' },
+                            '100%': { boxShadow: '0 0 35px rgba(112, 0, 255, 0.4)' },
+                        },
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-12px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #05060a;
+            color: #e2e8f0;
+            background-image: 
+                radial-gradient(circle at 15% 15%, rgba(112, 0, 255, 0.12) 0%, transparent 40%),
+                radial-gradient(circle at 85% 65%, rgba(0, 240, 255, 0.1) 0%, transparent 45%);
+            background-attachment: fixed;
+        }
+        .glass-panel {
+            background: rgba(15, 18, 29, 0.7);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.07);
+        }
+        .glass-panel-glow {
+            background: rgba(15, 18, 29, 0.85);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(0, 240, 255, 0.2);
+            box-shadow: 0 0 25px -5px rgba(0, 240, 255, 0.15);
+        }
+        .cyber-border-left {
+            position: relative;
+        }
+        .cyber-border-left::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 3px;
+            height: 100%;
+            background: linear-gradient(180deg, #00f0ff, #7000ff);
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #08090f;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #1e2640;
+            border-radius: 3px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #00f0ff;
+        }
+    </style>
+</head>
+<body class="font-sans antialiased selection:bg-cyber-cyan selection:text-black min-h-screen flex flex-col justify-between">
+
+    <header class="sticky top-4 z-50 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+        <div class="glass-panel rounded-2xl px-6 py-4 flex items-center justify-between shadow-2xl border border-white/10">
+            <a href="#inicio" class="flex items-center space-x-3 group">
+                <div class="w-11 h-11 rounded-xl bg-gradient-to-br from-cyber-cyan to-cyber-purple p-0.5 shadow-lg group-hover:scale-105 transition duration-300">
+                    <div class="w-full h-full bg-cyber-base rounded-[10px] flex items-center justify-center">
+                        <i class="fa-solid fa-microchip text-cyber-cyan group-hover:text-white transition"></i>
+                    </div>
+                </div>
+                <div>
+                    <span class="text-xl font-black tracking-wider text-white font-mono uppercase">ACL<span class="text-cyber-cyan">.</span>INF</span>
+                    <span class="block text-[9px] uppercase tracking-[0.2em] text-slate-400 font-bold">Laboratório Digital</span>
+                </div>
+            </a>
+
+            <!-- Navigation Links -->
+            <nav class="hidden md:flex items-center space-x-8 text-xs font-mono tracking-widest uppercase text-slate-300">
+                <a href="#inicio" class="hover:text-cyber-cyan transition-colors py-1">/Início</a>
+                <a href="#loja" class="hover:text-cyber-cyan transition-colors py-1">/Produtos</a>
+                <a href="#laboratorio" class="hover:text-cyber-cyan transition-colors py-1">/Reparos</a>
+                <a href="#orcamento" class="hover:text-cyber-cyan transition-colors py-1">/Orçamento</a>
+                <a href="#contato" class="hover:text-cyber-cyan transition-colors py-1">/Contato</a>
+            </nav>
+
+            <!-- Actions -->
+            <div class="flex items-center space-x-3">
+                <button onclick="toggleCart()" class="relative p-3 rounded-xl bg-slate-900/80 hover:bg-slate-800 text-slate-200 transition border border-white/10 group">
+                    <i class="fa-solid fa-bag-shopping text-cyber-cyan group-hover:scale-110 transition"></i>
+                    <span id="cart-badge" class="absolute -top-1.5 -right-1.5 bg-gradient-to-r from-cyber-pink to-cyber-purple text-white text-[10px] font-mono font-bold w-5 h-5 rounded-full flex items-center justify-center shadow-lg">0</span>
+                </button>
+                <button onclick="toggleMobileMenu()" class="md:hidden p-3 rounded-xl bg-slate-900/80 text-slate-200 border border-white/10">
+                    <i class="fa-solid fa-bars-staggered text-cyber-cyan"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden glass-panel rounded-2xl mt-2 p-6 space-y-4 border border-white/10 text-center font-mono text-sm tracking-wider uppercase">
+            <a href="#inicio" onclick="toggleMobileMenu()" class="block text-slate-300 hover:text-cyber-cyan py-2 border-b border-white/5">/Início</a>
+            <a href="#loja" onclick="toggleMobileMenu()" class="block text-slate-300 hover:text-cyber-cyan py-2 border-b border-white/5">/Produtos</a>
+            <a href="#laboratorio" onclick="toggleMobileMenu()" class="block text-slate-300 hover:text-cyber-cyan py-2 border-b border-white/5">/Reparos</a>
+            <a href="#orcamento" onclick="toggleMobileMenu()" class="block text-slate-300 hover:text-cyber-cyan py-2 border-b border-white/5">/Orçamento</a>
+            <a href="#contato" onclick="toggleMobileMenu()" class="block text-slate-300 hover:text-cyber-cyan py-2">/Contato</a>
+        </div>
+    </header>
+
+    <section id="inicio" class="relative pt-12 pb-24 md:pt-20 md:pb-32 overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                
+                <div class="lg:col-span-7 space-y-8">
+                    <div class="inline-flex items-center space-x-3 px-4 py-1.5 rounded-full glass-panel border border-cyber-cyan/30 text-cyber-cyan text-xs font-mono tracking-widest uppercase">
+                        <span class="w-2 h-2 rounded-full bg-cyber-emerald animate-ping"></span>
+                        <span>Lab de Altíssima Precisão & E-Commerce</span>
+                    </div>
+
+                    <h1 class="text-4xl sm:text-6xl lg:text-7xl font-black tracking-tight leading-[1.05] text-white">
+                        REPARAÇÃO <br>
+                        <span class="bg-gradient-to-r from-cyber-cyan via-purple-400 to-cyber-pink bg-clip-text text-transparent">AVANÇADA</span> &<br>
+                        TECNOLOGIA.
+                    </h1>
+
+                    <p class="text-slate-400 text-base sm:text-lg max-w-xl font-light leading-relaxed">
+                        Compra direta no site de notebooks de alto desempenho e eletrônicos premium. Diagnóstico técnico detalhado e orçamento para concerto 100% online.
+                    </p>
+
+                    <div class="flex flex-col sm:flex-row gap-4 pt-2">
+                        <a href="#loja" class="px-8 py-4 rounded-xl bg-gradient-to-r from-cyber-cyan to-blue-600 text-slate-950 font-bold text-sm tracking-wider uppercase font-mono shadow-lg shadow-cyber-cyan/20 hover:shadow-cyber-cyan/40 hover:scale-[1.02] transition duration-300 text-center">
+                            <i class="fa-solid fa-cart-shopping mr-2"></i> Explorar Loja
+                        </a>
+                        <a href="#orcamento" class="px-8 py-4 rounded-xl glass-panel text-white hover:text-cyber-cyan font-bold text-sm tracking-wider uppercase font-mono border border-white/10 hover:border-cyber-cyan/50 hover:scale-[1.02] transition duration-300 text-center">
+                            <i class="fa-solid fa-calculator mr-2"></i> Orçar Conserto
+                        </a>
+                    </div>
+
+                    <!-- Metrics Badges -->
+                    <div class="grid grid-cols-3 gap-4 pt-6 border-t border-white/10 max-w-lg">
+                        <div>
+                            <span class="block text-2xl font-black font-mono text-white">100%</span>
+                            <span class="text-xs text-slate-500 uppercase tracking-wider">Site Seguro</span>
+                        </div>
+                        <div>
+                            <span class="block text-2xl font-black font-mono text-cyber-cyan">90 Dias</span>
+                            <span class="text-xs text-slate-500 uppercase tracking-wider">Garantia Peças</span>
+                        </div>
+                        <div>
+                            <span class="block text-2xl font-black font-mono text-cyber-purple">24h/48h</span>
+                            <span class="text-xs text-slate-500 uppercase tracking-wider">Prazo Médio</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Interactive Tech Terminal Visual -->
+                <div class="lg:col-span-5 relative">
+                    <div class="absolute -inset-2 bg-gradient-to-r from-cyber-cyan via-cyber-purple to-cyber-pink rounded-3xl opacity-20 blur-2xl"></div>
+                    <div class="relative glass-panel rounded-2xl p-6 border border-white/15 space-y-4 animate-float">
+                        <div class="flex items-center justify-between border-b border-white/10 pb-4">
+                            <div class="flex items-center space-x-2">
+                                <span class="w-3 h-3 rounded-full bg-rose-500/80"></span>
+                                <span class="w-3 h-3 rounded-full bg-amber-500/80"></span>
+                                <span class="w-3 h-3 rounded-full bg-emerald-500/80"></span>
+                            </div>
+                            <span class="text-[11px] font-mono text-cyber-cyan">SYSTEM_STATUS: ONLINE</span>
+                        </div>
+                        
+                        <div class="font-mono text-xs space-y-3 py-2 text-slate-300">
+                            <p class="text-slate-500">> Inicializando sistema de verificação ACL...</p>
+                            <p class="text-emerald-400">✓ Vendas ativas: Notebooks & Eletrônicos</p>
+                            <p class="text-cyber-cyan">✓ Modulo de Orçamento: Pronto para cadastro</p>
+                            <p class="text-purple-300">✓ Pagamentos online: Encriptação Ativa</p>
+                            
+                            <div class="bg-black/40 rounded-xl p-4 border border-white/5 space-y-2 mt-4">
+                                <div class="flex justify-between text-[11px]">
+                                    <span class="text-slate-400">Diagnóstico Térmico BGA</span>
+                                    <span class="text-cyber-cyan">Aprovado</span>
+                                </div>
+                                <div class="w-full bg-slate-800 h-1.5 rounded-full overflow-hidden">
+                                    <div class="bg-gradient-to-r from-cyber-cyan to-cyber-purple h-full w-[88%]"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="p-4 rounded-xl bg-gradient-to-r from-cyber-purple/20 to-transparent border border-cyber-purple/30 flex items-center justify-between">
+                            <div class="flex items-center space-x-3">
+                                <i class="fa-solid fa-shield-halved text-cyber-cyan text-xl"></i>
+                                <div>
+                                    <h4 class="text-xs font-bold text-white uppercase font-mono">Processamento Direto</h4>
+                                    <p class="text-[10px] text-slate-400">Sem terceiros, finalização no site</p>
+                                </div>
+                            </div>
+                            <i class="fa-solid fa-chevron-right text-xs text-slate-500"></i>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section id="loja" class="py-20 relative border-t border-white/5">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
+                <div>
+                    <span class="text-cyber-cyan font-mono text-xs uppercase tracking-[0.2em] block mb-2">// CATÁLOGO DE PRODUTOS</span>
+                    <h2 class="text-3xl sm:text-5xl font-black text-white">NOTEBOOKS & COMPONENTES</h2>
+                </div>
+
+                <!-- Custom Filter Tabs -->
+                <div class="flex items-center space-x-2 bg-slate-900/90 p-1.5 rounded-xl border border-white/10 font-mono text-xs">
+                    <button onclick="filterProducts('all')" id="btn-all" class="px-5 py-2.5 rounded-lg bg-cyber-cyan text-slate-950 font-bold transition">TODOS</button>
+                    <button onclick="filterProducts('notebook')" id="btn-notebook" class="px-5 py-2.5 rounded-lg text-slate-400 hover:text-white transition">NOTEBOOKS</button>
+                    <button onclick="filterProducts('eletronico')" id="btn-eletronico" class="px-5 py-2.5 rounded-lg text-slate-400 hover:text-white transition">ELETRÔNICOS</button>
+                </div>
+            </div>
+
+            <!-- Products Grid -->
+            <div id="product-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Javascript populated -->
+            </div>
+        </div>
+    </section>
+
+    <section id="laboratorio" class="py-20 border-t border-white/5 relative bg-black/30">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-2xl mx-auto space-y-3 mb-16">
+                <span class="text-cyber-purple font-mono text-xs uppercase tracking-[0.2em] block">// CONCERTOS ESPECIALIZADOS</span>
+                <h2 class="text-3xl sm:text-5xl font-black text-white">NOSSOS SERVIÇOS TÉCNICOS</h2>
+                <p class="text-slate-400 text-sm font-light">
+                    Soluções de engenharia eletrônica para reparar seus equipamentos com máxima eficiência.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Service 1 -->
+                <div class="glass-panel p-8 rounded-2xl border border-white/10 hover:border-cyber-cyan/40 transition duration-300 space-y-6 cyber-border-left">
+                    <div class="w-14 h-14 rounded-xl bg-cyber-cyan/10 border border-cyber-cyan/30 flex items-center justify-center text-cyber-cyan text-2xl">
+                        <i class="fa-solid fa-laptop-code"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white">Reparo em Placa Mãe</h3>
+                    <p class="text-slate-400 text-xs leading-relaxed">
+                        Reballing BGA, troca de PWM, remoção de curtos-circuitos em linhas de alimentação e recuperação de componentes SMD/DIP.
+                    </p>
+                    <ul class="text-xs font-mono text-slate-300 space-y-2 border-t border-white/5 pt-4">
+                        <li class="flex items-center"><i class="fa-solid fa-check text-cyber-cyan mr-2"></i> Análise Osciloscópica</li>
+                        <li class="flex items-center"><i class="fa-solid fa-check text-cyber-cyan mr-2"></i> Desoxidação Química</li>
+                    </ul>
+                </div>
+
+                <!-- Service 2 -->
+                <div class="glass-panel p-8 rounded-2xl border border-white/10 hover:border-cyber-purple/40 transition duration-300 space-y-6 cyber-border-left">
+                    <div class="w-14 h-14 rounded-xl bg-cyber-purple/10 border border-cyber-purple/30 flex items-center justify-center text-cyber-purple text-2xl">
+                        <i class="fa-solid fa-screwdriver-wrench"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white">Telas, Baterias & Teclados</h3>
+                    <p class="text-slate-400 text-xs leading-relaxed">
+                        Substituição rápida de displays quebrados IPS/OLED, baterias originais de alta autonomia e teclados padrão ABNT2.
+                    </p>
+                    <ul class="text-xs font-mono text-slate-300 space-y-2 border-t border-white/5 pt-4">
+                        <li class="flex items-center"><i class="fa-solid fa-check text-cyber-purple mr-2"></i> Peças 100% Originais</li>
+                        <li class="flex items-center"><i class="fa-solid fa-check text-cyber-purple mr-2"></i> Instalação Limpa</li>
+                    </ul>
+                </div>
+
+                <!-- Service 3 -->
+                <div class="glass-panel p-8 rounded-2xl border border-white/10 hover:border-cyber-pink/40 transition duration-300 space-y-6 cyber-border-left">
+                    <div class="w-14 h-14 rounded-xl bg-cyber-pink/10 border border-cyber-pink/30 flex items-center justify-center text-cyber-pink text-2xl">
+                        <i class="fa-solid fa-microchip"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white">Upgrades & Consoles</h3>
+                    <p class="text-slate-400 text-xs leading-relaxed">
+                        Aumento de velocidade com SSD NVMe M.2 de alta transferência, expansão de Memória RAM e manutenção em videogames.
+                    </p>
+                    <ul class="text-xs font-mono text-slate-300 space-y-2 border-t border-white/5 pt-4">
+                        <li class="flex items-center"><i class="fa-solid fa-check text-cyber-pink mr-2"></i> Otimização de Sistema</li>
+                        <li class="flex items-center"><i class="fa-solid fa-check text-cyber-pink mr-2"></i> Troca de Pasta Térmica</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="orcamento" class="py-20 border-t border-white/5 relative">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="glass-panel-glow rounded-3xl p-8 sm:p-12 relative overflow-hidden">
+                <div class="absolute -right-20 -bottom-20 w-64 h-64 bg-cyber-purple/20 rounded-full blur-3xl pointer-events-none"></div>
+
+                <div class="text-center space-y-3 mb-10">
+                    <span class="text-cyber-cyan font-mono text-xs uppercase tracking-[0.2em]">// SOLICITAÇÃO 100% ONLINE</span>
+                    <h2 class="text-3xl font-black text-white uppercase">ORÇAMENTO PARA CONSERTO</h2>
+                    <p class="text-slate-400 text-xs sm:text-sm">
+                        Preencha os dados do equipamento. Nossa equipe enviará a estimativa técnica detalhada diretamente no seu e-mail/contato.
+                    </p>
+                </div>
+
+                <form id="quote-form" onsubmit="handleQuoteSubmit(event)" class="space-y-6">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-xs font-mono text-slate-300 uppercase mb-2">Nome Completo</label>
+                            <input type="text" id="quote-name" required placeholder="Digite seu nome" class="w-full bg-slate-950/80 border border-white/10 rounded-xl px-4 py-3.5 text-white text-sm focus:outline-none focus:border-cyber-cyan transition">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-mono text-slate-300 uppercase mb-2">E-mail ou Telefone de Contato</label>
+                            <input type="text" id="quote-contact" required placeholder="exemplo@email.com / (00) 00000-0000" class="w-full bg-slate-950/80 border border-white/10 rounded-xl px-4 py-3.5 text-white text-sm focus:outline-none focus:border-cyber-cyan transition">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-xs font-mono text-slate-300 uppercase mb-2">Aparelho</label>
+                            <select id="quote-device" class="w-full bg-slate-950/80 border border-white/10 rounded-xl px-4 py-3.5 text-white text-sm focus:outline-none focus:border-cyber-cyan transition">
+                                <option value="Notebook">Notebook (Portátil)</option>
+                                <option value="Desktop PC">Computador / PC Gamer</option>
+                                <option value="Console">Console de Videogame</option>
+                                <option value="Outro">Outro Eletrônico</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-mono text-slate-300 uppercase mb-2">Marca / Modelo</label>
+                            <input type="text" id="quote-model" required placeholder="Ex: Dell G15 / Playstation 5 / Acer" class="w-full bg-slate-950/80 border border-white/10 rounded-xl px-4 py-3.5 text-white text-sm focus:outline-none focus:border-cyber-cyan transition">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-mono text-slate-300 uppercase mb-2">Descrição do Defeito / Problema</label>
+                        <textarea id="quote-desc" rows="4" required placeholder="Detalhes (Ex: Aparelho liga mas não dá imagem, aquecimento excessivo, tela trincada)..." class="w-full bg-slate-950/80 border border-white/10 rounded-xl px-4 py-3.5 text-white text-sm focus:outline-none focus:border-cyber-cyan transition"></textarea>
+                    </div>
+
+                    <button type="submit" class="w-full py-4 rounded-xl bg-gradient-to-r from-cyber-cyan via-blue-600 to-cyber-purple text-slate-950 font-bold font-mono text-sm tracking-wider uppercase shadow-xl hover:opacity-95 transition">
+                        <i class="fa-solid fa-paper-plane mr-2"></i> Enviar Solicitação de Orçamento
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <section id="contato" class="py-20 border-t border-white/5 bg-slate-950/50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div class="space-y-6">
+                    <span class="text-cyber-cyan font-mono text-xs uppercase tracking-[0.2em]">// ATENDIMENTO DIRETO</span>
+                    <h2 class="text-3xl sm:text-5xl font-black text-white">CENTRAL ACL</h2>
+                    <p class="text-slate-400 text-sm font-light leading-relaxed">
+                        Dúvidas sobre produtos do catálogo ou andamento do seu orçamento? Entre em contato via formulário oficial ou e-mail de suporte.
+                    </p>
+
+                    <div class="space-y-4 pt-4 font-mono text-xs">
+                        <div class="glass-panel p-5 rounded-2xl flex items-center space-x-4 border border-white/5">
+                            <div class="w-10 h-10 rounded-xl bg-cyber-cyan/10 text-cyber-cyan flex items-center justify-center text-lg">
+                                <i class="fa-solid fa-envelope"></i>
+                            </div>
+                            <div>
+                                <span class="text-slate-500 block uppercase">E-mail Oficial</span>
+                                <span class="text-white font-semibold">clnfrmtc@gmail.com</span>
+                            </div>
+                        </div>
+
+                        <div class="glass-panel p-5 rounded-2xl flex items-center space-x-4 border border-white/5">
+                            <div class="w-10 h-10 rounded-xl bg-cyber-purple/10 text-cyber-purple flex items-center justify-center text-lg">
+                                <i class="fa-solid fa-clock"></i>
+                            </div>
+                            <div>
+                                <span class="text-slate-500 block uppercase">Atendimento On-line</span>
+                                <span class="text-white font-semibold">Segunda a Sexta: 08:30h - 18:00h</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="glass-panel p-8 rounded-3xl border border-white/10 shadow-2xl">
+                    <h3 class="text-lg font-bold font-mono text-white mb-6 uppercase tracking-wider">// Mensagem Direta</h3>
+                    <form onsubmit="handleContactSubmit(event)" class="space-y-4">
+                        <div>
+                            <label class="block text-xs font-mono text-slate-400 mb-1">Nome</label>
+                            <input type="text" required placeholder="Seu nome" class="w-full bg-slate-950 border border-white/10 rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-cyber-cyan">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-mono text-slate-400 mb-1">Seu E-mail</label>
+                            <input type="email" required placeholder="seu@email.com" class="w-full bg-slate-950 border border-white/10 rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-cyber-cyan">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-mono text-slate-400 mb-1">Mensagem</label>
+                            <textarea rows="3" required placeholder="Digite sua dúvida ou mensagem..." class="w-full bg-slate-950 border border-white/10 rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-cyber-cyan"></textarea>
+                        </div>
+                        <button type="submit" class="w-full py-3.5 rounded-xl bg-white text-slate-950 hover:bg-cyber-cyan font-bold font-mono text-xs uppercase tracking-wider transition duration-300">
+                            Enviar Mensagem
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="border-t border-white/10 bg-black/80 py-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-4">
+            <div class="flex items-center space-x-3">
+                <span class="text-sm font-black font-mono tracking-widest text-white">ACL INFORMÁTICA</span>
+            </div>
+            <p class="text-slate-500 text-xs font-mono text-center">
+                &copy; 2026 ACL Informática. Todos os direitos reservados. Transações e orçamentos exclusivamente via site.
+            </p>
+            <span class="text-xs font-mono text-cyber-cyan bg-cyber-cyan/10 px-3 py-1 rounded-full border border-cyber-cyan/20">
+                SSL Secured
+            </span>
+        </div>
+    </footer>
+
+    <div id="cart-drawer" class="fixed inset-0 z-50 overflow-hidden hidden">
+        <div class="absolute inset-0 bg-black/80 backdrop-blur-md transition-opacity" onclick="toggleCart()"></div>
+        <div class="absolute inset-y-0 right-0 max-w-full flex pl-10">
+            <div class="w-screen max-w-md bg-cyber-base border-l border-white/10 shadow-2xl flex flex-col">
+                <div class="p-6 border-b border-white/10 flex items-center justify-between">
+                    <div class="flex items-center space-x-3">
+                        <i class="fa-solid fa-bag-shopping text-cyber-cyan"></i>
+                        <h3 class="font-bold text-white font-mono text-sm uppercase tracking-wider">CARRINHO DE COMPRAS</h3>
+                    </div>
+                    <button onclick="toggleCart()" class="p-2 text-slate-400 hover:text-white">
+                        <i class="fa-solid fa-xmark text-lg"></i>
+                    </button>
+                </div>
+
+                <div id="cart-items-container" class="flex-1 overflow-y-auto p-6 space-y-4 custom-scrollbar">
+                    <!-- Javascript populated -->
+                </div>
+
+                <div class="p-6 border-t border-white/10 bg-slate-950 space-y-4">
+                    <div class="flex items-center justify-between text-sm font-mono text-white">
+                        <span class="text-slate-400 uppercase">Subtotal:</span>
+                        <span id="cart-total" class="text-cyber-cyan text-lg font-bold">R$ 0,00</span>
+                    </div>
+                    <button onclick="openCheckout()" id="checkout-btn" class="w-full py-4 rounded-xl bg-gradient-to-r from-cyber-cyan to-blue-600 text-slate-950 font-bold font-mono text-xs uppercase tracking-wider shadow-lg disabled:opacity-40 disabled:cursor-not-allowed">
+                        Finalizar Pedido no Site
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="checkout-modal" class="fixed inset-0 z-50 flex items-center justify-center px-4 hidden">
+        <div class="absolute inset-0 bg-black/80 backdrop-blur-md" onclick="closeCheckout()"></div>
+        <div class="relative glass-panel border border-white/15 rounded-3xl p-8 max-w-lg w-full shadow-2xl z-10 space-y-6">
+            <div class="flex items-center justify-between border-b border-white/10 pb-4">
+                <h3 class="text-lg font-bold font-mono text-white uppercase tracking-wider">// Checkout Seguro</h3>
+                <button onclick="closeCheckout()" class="text-slate-400 hover:text-white">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+            <form onsubmit="finalizeOrder(event)" class="space-y-4 font-sans text-xs">
+                <div>
+                    <label class="block font-mono text-slate-300 mb-1">Nome Completo</label>
+                    <input type="text" required placeholder="Seu nome completo" class="w-full bg-slate-950 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-cyber-cyan">
+                </div>
+                <div>
+                    <label class="block font-mono text-slate-300 mb-1">Endereço Completo de Entrega</label>
+                    <input type="text" required placeholder="Rua, Número, Bairro, Cidade, CEP" class="w-full bg-slate-950 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-cyber-cyan">
+                </div>
+                <div>
+                    <label class="block font-mono text-slate-300 mb-1">Método de Pagamento</label>
+                    <select class="w-full bg-slate-950 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-cyber-cyan">
+                        <option value="pix">PIX (Confirmação Imediata)</option>
+                        <option value="cartao">Cartão de Crédito em até 12x</option>
+                        <option value="boleto">Boleto Bancário</option>
+                    </select>
+                </div>
+                <button type="submit" class="w-full py-4 rounded-xl bg-cyber-emerald text-slate-950 font-bold font-mono uppercase tracking-wider hover:opacity-90 transition mt-4">
+                    Confirmar e Pagar
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <div id="notification-modal" class="fixed inset-0 z-50 flex items-center justify-center px-4 hidden">
+        <div class="absolute inset-0 bg-black/80 backdrop-blur-md" onclick="closeNotification()"></div>
+        <div class="relative glass-panel border border-white/15 rounded-2xl p-6 max-w-sm w-full text-center space-y-4 shadow-2xl z-10">
+            <div id="notification-icon" class="w-12 h-12 rounded-full bg-cyber-cyan/20 text-cyber-cyan mx-auto flex items-center justify-center text-xl">
+                <i class="fa-solid fa-check"></i>
+            </div>
+            <h4 id="notification-title" class="text-base font-mono font-bold text-white uppercase tracking-wider"></h4>
+            <p id="notification-text" class="text-xs text-slate-300 leading-relaxed"></p>
+            <button onclick="closeNotification()" class="w-full py-2.5 rounded-xl bg-cyber-cyan text-slate-950 font-bold font-mono text-xs uppercase tracking-wider">
+                OK
+            </button>
+        </div>
+    </div>
+
+    <script>
+        const products = [
+            {
+                id: 1,
+                name: 'Notebook Gamer ACL CyberCore',
+                category: 'notebook',
+                price: 5899.00,
+                image: 'https://placehold.co/600x400/0f121d/00f0ff?text=ACL+CyberCore+i7',
+                description: 'Intel i7 13ª Geração, 16GB DDR5, SSD 1TB NVMe, RTX 4050 6GB.'
+            },
+            {
+                id: 2,
+                name: 'Ultrabook ACL Slim V2 14"',
+                category: 'notebook',
+                price: 3499.00,
+                image: 'https://placehold.co/600x400/0f121d/7000ff?text=ACL+Ultrabook+Slim',
+                description: 'AMD Ryzen 5, 16GB RAM, SSD 512GB, Display Full HD IPS 100% sRGB.'
+            },
+            {
+                id: 3,
+                name: 'Notebook Workstation Pro',
+                category: 'notebook',
+                price: 4799.00,
+                image: 'https://placehold.co/600x400/0f121d/ff007a?text=ACL+Workstation',
+                description: 'Intel i7, 32GB RAM, SSD 1TB, Bateria para até 10 Horas de uso.'
+            },
+            {
+                id: 4,
+                name: 'Monitor Ultra-Wide 29" 100Hz',
+                category: 'eletronico',
+                price: 1299.00,
+                image: 'https://placehold.co/600x400/0f121d/00f0ff?text=Monitor+Ultrawide+29',
+                description: 'Painel IPS, HDR10, Conexões HDMI e DisplayPort integradas.'
+            },
+            {
+                id: 5,
+                name: 'Kit Teclado Mecânico + Mouse Optico',
+                category: 'eletronico',
+                price: 389.00,
+                image: 'https://placehold.co/600x400/0f121d/7000ff?text=Kit+Perifericos+RGB',
+                description: 'Switches Red silenciosos, Iluminação RGB customizável e Sensor 12000 DPI.'
+            },
+            {
+                id: 6,
+                name: 'SSD NVMe M.2 1TB Leitura 3500MB/s',
+                category: 'eletronico',
+                price: 459.00,
+                image: 'https://placehold.co/600x400/0f121d/00ffaa?text=SSD+NVMe+1TB',
+                description: 'Upgrade perfeito para elevar o desempenho de notebooks e computadores.'
+            }
+        ];
+
+        let cart = [];
+
+        window.onload = function() {
+            renderProducts(products);
+            updateCartUI();
+        };
+
+        function toggleMobileMenu() {
+            document.getElementById('mobile-menu').classList.toggle('hidden');
+        }
+
+        function renderProducts(items) {
+            const grid = document.getElementById('product-grid');
+            grid.innerHTML = '';
+
+            items.forEach(product => {
+                const card = document.createElement('div');
+                card.className = 'glass-panel rounded-2xl overflow-hidden border border-white/10 hover:border-cyber-cyan/50 transition duration-300 flex flex-col justify-between group';
+                card.innerHTML = `
+                    <div class="relative overflow-hidden bg-black/50 h-52">
+                        <img src="${product.image}" alt="${product.name}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                        <span class="absolute top-3 right-3 px-3 py-1 rounded-full bg-black/80 border border-white/10 font-mono text-[10px] text-cyber-cyan uppercase">
+                            ${product.category}
+                        </span>
+                    </div>
+                    <div class="p-6 space-y-4 flex-1 flex flex-col justify-between">
+                        <div>
+                            <h3 class="text-base font-bold text-white mb-2">${product.name}</h3>
+                            <p class="text-slate-400 text-xs font-light leading-relaxed">${product.description}</p>
+                        </div>
+                        <div class="flex items-center justify-between pt-4 border-t border-white/10">
+                            <div>
+                                <span class="block text-[10px] font-mono text-slate-500 uppercase">Preço no site</span>
+                                <span class="text-lg font-black font-mono text-white">R$ ${product.price.toLocaleString('pt-BR', {minimumFractionDigits: 2})}</span>
+                            </div>
+                            <button onclick="addToCart(${product.id})" class="px-4 py-2.5 rounded-xl bg-cyber-cyan/10 hover:bg-cyber-cyan text-cyber-cyan hover:text-slate-950 font-mono font-bold text-xs uppercase border border-cyber-cyan/30 transition duration-300">
+                                <i class="fa-solid fa-cart-plus mr-1.5"></i> Comprar
+                            </button>
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function filterProducts(category) {
+            const buttons = ['all', 'notebook', 'eletronico'];
+            buttons.forEach(btn => {
+                const el = document.getElementById(`btn-${btn}`);
+                if (btn === category) {
+                    el.className = 'px-5 py-2.5 rounded-lg bg-cyber-cyan text-slate-950 font-bold transition';
+                } else {
+                    el.className = 'px-5 py-2.5 rounded-lg text-slate-400 hover:text-white transition';
+                }
+            });
+
+            if (category === 'all') {
+                renderProducts(products);
+            } else {
+                renderProducts(products.filter(p => p.category === category));
+            }
+        }
+
+        function toggleCart() {
+            document.getElementById('cart-drawer').classList.toggle('hidden');
+        }
+
+        function addToCart(productId) {
+            const product = products.find(p => p.id === productId);
+            const existing = cart.find(item => item.id === productId);
+
+            if (existing) {
+                existing.quantity += 1;
+            } else {
+                cart.push({ ...product, quantity: 1 });
+            }
+
+            updateCartUI();
+            showNotification('PRODUTO ADICIONADO', `${product.name} foi adicionado ao seu carrinho com sucesso.`, 'success');
+        }
+
+        function removeFromCart(productId) {
+            cart = cart.filter(item => item.id !== productId);
+            updateCartUI();
+        }
+
+        function updateCartUI() {
+            const badge = document.getElementById('cart-badge');
+            const container = document.getElementById('cart-items-container');
+            const totalEl = document.getElementById('cart-total');
+            const checkoutBtn = document.getElementById('checkout-btn');
+
+            const totalCount = cart.reduce((sum, item) => sum + item.quantity, 0);
+            badge.innerText = totalCount;
+
+            if (cart.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-16 text-slate-500 space-y-3 font-mono">
+                        <i class="fa-solid fa-bag-shopping text-3xl text-slate-700"></i>
+                        <p class="text-xs">Carrinho vazio.</p>
+                    </div>
+                `;
+                totalEl.innerText = 'R$ 0,00';
+                checkoutBtn.disabled = true;
+                return;
+            }
+
+            checkoutBtn.disabled = false;
+            container.innerHTML = '';
+            let total = 0;
+
+            cart.forEach(item => {
+                total += item.price * item.quantity;
+                const div = document.createElement('div');
+                div.className = 'flex items-center justify-between p-4 rounded-xl bg-slate-950 border border-white/5 font-sans';
+                div.innerHTML = `
+                    <div class="space-y-1">
+                        <h4 class="font-bold text-white text-xs">${item.name}</h4>
+                        <p class="text-[11px] font-mono text-cyber-cyan">R$ ${item.price.toLocaleString('pt-BR', {minimumFractionDigits: 2})} x ${item.quantity}</p>
+                    </div>
+                    <button onclick="removeFromCart(${item.id})" class="text-slate-500 hover:text-rose-400 p-2">
+                        <i class="fa-solid fa-trash-can"></i>
+                    </button>
+                `;
+                container.appendChild(div);
+            });
+
+            totalEl.innerText = `R$ ${total.toLocaleString('pt-BR', {minimumFractionDigits: 2})}`;
+        }
+
+        function openCheckout() {
+            toggleCart();
+            document.getElementById('checkout-modal').classList.remove('hidden');
+        }
+
+        function closeCheckout() {
+            document.getElementById('checkout-modal').classList.add('hidden');
+        }
+
+        function finalizeOrder(event) {
+            event.preventDefault();
+            closeCheckout();
+            showNotification('PAGAMENTO INDISPONÍVEL', 'Aviso: Nenhuma plataforma de pagamento está integrada ao site para processar esta compra no momento.', 'warning');
+        }
+
+        function handleQuoteSubmit(event) {
+            event.preventDefault();
+            const name = document.getElementById('quote-name').value;
+            document.getElementById('quote-form').reset();
+            showNotification('SOLICITAÇÃO RECEBIDA', `Olá ${name}, a solicitação do seu orçamento de conserto foi recebida. Nossos técnicos responderão em breve!`, 'success');
+        }
+
+        function handleContactSubmit(event) {
+            event.preventDefault();
+            event.target.reset();
+            showNotification('MENSAGEM ENVIADA', 'Mensagem enviada com sucesso ao nosso laboratório.', 'success');
+        }
+
+        function showNotification(title, text, type = 'success') {
+            document.getElementById('notification-title').innerText = title;
+            document.getElementById('notification-text').innerText = text;
+            document.getElementById('notification-modal').classList.remove('hidden');
+        }
+
+        function closeNotification() {
+            document.getElementById('notification-modal').classList.add('hidden');
+        }
+    </script>
+</body>
+</html>
+```
